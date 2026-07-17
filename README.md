@@ -7,6 +7,11 @@ graph is **written entirely by hand with LangGraph** — without `create_agent` 
 control every stage: analysis, planning, retrieval, self-correction and
 anti-hallucination verification.
 
+📄 **[Read the full project report (PDF)](reports/rapport.pdf)** — motivation, design
+decisions, the problems I hit and how I solved them, and the evaluation results.
+
+![Reasoning graph](reports/figures/graphe.png)
+
 ---
 
 ## 1. What the system does

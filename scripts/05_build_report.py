@@ -28,8 +28,8 @@ CSV_PATH = REPORTS_DIR / "evaluation.csv"
 
 METRICS = ["latence_s", "hit_at_k", "mrr", "fidelite", "completude", "clarte"]
 LABELS = {
-    "latence_s": "Latence (s)", "hit_at_k": "hit@k", "mrr": "MRR",
-    "fidelite": "Fidélité /5", "completude": "Complétude /5", "clarte": "Clarté /5",
+    "latence_s": "Latency (s)", "hit_at_k": "hit@k", "mrr": "MRR",
+    "fidelite": "Faithfulness /5", "completude": "Completeness /5", "clarte": "Clarity /5",
 }
 
 # Emplacements possibles de Chrome/Chromium selon la plateforme.
@@ -42,14 +42,30 @@ CHROME_CANDIDATES = [
 ]
 
 
+# Cartes "at a glance" : les metriques cles du resultat global.
+CARD_METRICS = [
+    ("hit_at_k", "hit@k", "{:.2f}"),
+    ("mrr", "MRR", "{:.2f}"),
+    ("fidelite", "Faithfulness /5", "{:.1f}"),
+    ("clarte", "Clarity /5", "{:.1f}"),
+    ("latence_s", "Latency (s)", "{:.0f}"),
+]
+
+
 def _build_results_html(frame: pd.DataFrame) -> str:
-    """Construit le tableau HTML de synthese a partir du CSV d'evaluation."""
+    """Build the English summary (metric cards + per-category table)."""
     frame = frame[frame["latence_s"].notna()].copy()
     n_simple = int((frame.categorie == "simple").sum())
     n_complex = int((frame.categorie == "complexe").sum())
 
     by_cat = frame.groupby("categorie")[METRICS].mean().round(2)
     overall = frame[METRICS].mean().round(2)
+
+    cards = "".join(
+        f'<div class="card"><div class="v">{fmt.format(overall[m])}</div>'
+        f'<div class="l">{label}</div></div>'
+        for m, label, fmt in CARD_METRICS
+    )
 
     def row(name: str, series) -> str:
         cells = "".join(f'<td class="num">{series[m]:.2f}</td>' for m in METRICS)
@@ -58,15 +74,18 @@ def _build_results_html(frame: pd.DataFrame) -> str:
     header = "".join(f'<th class="num">{LABELS[m]}</th>' for m in METRICS)
     body = ""
     if "simple" in by_cat.index:
-        body += row(f"Questions simples ({n_simple})", by_cat.loc["simple"])
+        body += row(f"Simple questions ({n_simple})", by_cat.loc["simple"])
     if "complexe" in by_cat.index:
-        body += row(f"Questions complexes ({n_complex})", by_cat.loc["complexe"])
-    body += row(f"Global ({len(frame)})", overall)
+        body += row(f"Complex questions ({n_complex})", by_cat.loc["complexe"])
+    body += row(f"Overall ({len(frame)})", overall)
 
     return (
-        f'<p class="meta">Modèle : <code>{describe_llm()}</code> · '
-        f'{len(frame)} questions évaluées.</p>'
-        f'<table><tr><th style="width:24%">Catégorie</th>{header}</tr>{body}</table>'
+        f'<div class="cards">{cards}</div>'
+        f'<table><tr><th style="width:22%">Category</th>{header}</tr>{body}</table>'
+        f'<p class="meta">Model: <code>{describe_llm()}</code> · '
+        f'{len(frame)} questions evaluated. The evaluation above ran on the light model '
+        f'(Llama 3.1 8B) to stay within the free daily quota; the target setup uses '
+        f'Llama 3.3 70B for reasoning.</p>'
     )
 
 
