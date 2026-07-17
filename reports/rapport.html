@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Rapport — Agent RAG Agentique Formule 1</title>
+<style>
+  @page { size: A4; margin: 15mm 16mm; }
+  * { box-sizing: border-box; }
+  html { font-size: 10.2px; }
+  body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: #1a1a1a; line-height: 1.42; margin: 0;
+  }
+  h1 { font-size: 1.85rem; margin: 0 0 2px; color: #b30000; letter-spacing: -.3px; }
+  h2 {
+    font-size: 1.12rem; margin: 14px 0 5px; color: #b30000;
+    border-bottom: 1.5px solid #e2a0a0; padding-bottom: 2px;
+  }
+  h3 { font-size: .96rem; margin: 9px 0 3px; color: #222; }
+  p { margin: 4px 0; text-align: justify; }
+  ul { margin: 4px 0; padding-left: 17px; }
+  li { margin: 2px 0; }
+  .sub { color: #555; font-size: .82rem; margin: 0 0 8px; }
+  .meta { font-size: .78rem; color: #666; }
+  code { font-family: "SF Mono", Consolas, monospace; font-size: .82rem;
+         background: #f2f2f4; padding: 0 3px; border-radius: 3px; }
+  .cols { display: flex; gap: 14px; }
+  .col { flex: 1; }
+  table { width: 100%; border-collapse: collapse; margin: 6px 0; font-size: .82rem; }
+  th, td { border: 1px solid #cfcfd4; padding: 3px 6px; text-align: left; }
+  th { background: #f4e6e6; font-weight: 600; }
+  td.num, th.num { text-align: right; }
+  .box { background: #faf6f6; border-left: 3px solid #b30000; padding: 6px 10px; margin: 6px 0; }
+  .tag { display: inline-block; background: #b30000; color: #fff; font-size: .68rem;
+         padding: 1px 6px; border-radius: 8px; vertical-align: middle; }
+  .flow { font-family: "SF Mono", Consolas, monospace; font-size: .72rem;
+          background: #1a1a1a; color: #eee; padding: 8px 10px; border-radius: 5px;
+          white-space: pre; line-height: 1.3; overflow: hidden; }
+  .small { font-size: .8rem; color: #444; }
+  .footer { margin-top: 10px; font-size: .72rem; color: #888; border-top: 1px solid #ddd; padding-top: 4px; }
+</style>
+</head>
+<body>
+
+<h1>Agent RAG Agentique — Formule 1</h1>
+<p class="sub">Système Retrieval-Augmented Generation à raisonnement, construit avec <strong>LangGraph</strong>
+&nbsp;·&nbsp; Master IIBDCC — SMA &amp; IAD &nbsp;·&nbsp; Évaluation de fin de module</p>
+
+<h2>1. Objectif et domaine</h2>
+<p>
+L'objectif est de concevoir un système <strong>Agentic RAG</strong> capable de répondre à des questions
+simples et complexes en s'appuyant sur une base documentaire externe, tout en ajoutant des capacités de
+<em>raisonnement, planification, usage d'outils et auto-correction</em>. Le graphe de raisonnement est
+<strong>écrit intégralement à la main avec LangGraph</strong>, et non via la méthode prête à l'emploi
+<code>create_agent</code> de LangChain : ce choix est imposé par la consigne et permet de contrôler
+chaque étape de la boucle (analyse, récupération, évaluation, vérification).
+</p>
+<p>
+Le domaine retenu est la <strong>Formule 1</strong>, riche en vocabulaire technique (DRS, ERS, turbo),
+en entités à comparer (pilotes, écuries, circuits) et en données chronologiques (saisons 2005–2025),
+ce qui fournit un terrain idéal pour distinguer questions factuelles et questions de raisonnement.
+Le système est <strong>bilingue FR/EN</strong> : les questions peuvent être posées dans l'une ou l'autre
+langue sur un corpus majoritairement anglophone.
+</p>
+
+<h2>2. Démarche suivie</h2>
+<div class="cols">
+<div class="col">
+<h3>2.1 Construction de la base documentaire</h3>
+<p>
+83 pages Wikipédia (≈ 3,0 M de caractères) sont téléchargées via l'API MediaWiki, nettoyées
+(suppression des sections non informatives, conservation des titres de section comme contexte) et
+classées en <strong>9 catégories</strong> métier : règlement, écurie, pilote, circuit, glossaire,
+technique, <strong>stratégie</strong>, saison (2005–2025) et histoire. La catégorie devient une
+métadonnée exploitée par les outils pour filtrer la recherche.
+</p>
+<h3>2.2 Prétraitement et vectorisation</h3>
+<p>
+Les documents sont découpés en <strong>6 493 chunks</strong> (800 caractères, recouvrement 120), chacun
+préfixé de son titre et de sa section pour rester auto-suffisant. La vectorisation utilise un modèle
+<strong>multilingue local</strong> (<code>paraphrase-multilingual-MiniLM</code>) exécuté via
+<strong>ONNX / FastEmbed</strong>, puis les vecteurs sont indexés dans <strong>Chroma</strong>.
+</p>
+</div>
+<div class="col">
+<h3>2.3 Création des outils</h3>
+<p>L'agent dispose de <strong>5 outils</strong> :</p>
+<ul>
+<li><code>rechercher_documents</code> — recherche hybride sur tout le corpus ;</li>
+<li><code>rechercher_par_categorie</code> — recherche filtrée par catégorie ;</li>
+<li><code>comparer_entites</code> — récupère en parallèle les faits sur deux entités ;</li>
+<li><code>inventaire_corpus</code> — liste le contenu disponible ;</li>
+<li><code>calculer_points_championnat</code> — calcul <em>déterministe</em> des points (barème officiel).</li>
+</ul>
+<h3>2.4 Modèle de langage</h3>
+<p>
+Une fabrique découple le graphe du fournisseur : le LLM est interchangeable
+(<strong>Groq</strong> Llama&nbsp;3.3&nbsp;70B, Google Gemini ou Ollama) via un simple fichier
+<code>.env</code>. Trois rôles distincts (raisonneur, évaluateur, juge) sont exposés, à température nulle
+pour les décisions structurées.
+</p>
+</div>
+</div>
+
+<h2>3. Fonctionnement du système — architecture du graphe</h2>
+<div class="cols">
+<div class="col" style="flex:1.15">
+<p>
+Le state LangGraph transporte, en plus de l'historique conversationnel (<strong>mémoire</strong> par
+<code>thread_id</code>), l'espace de travail d'un tour : question rendue autonome, langue, complexité,
+plan, documents récupérés et compteurs de garde-fou. Chaque nœud est une fonction pure qui ne renvoie
+que les champs qu'il modifie ; des <em>réducteurs</em> gèrent la fusion (dont la déduplication des chunks).
+</p>
+<p class="small"><strong>Approche Agentic RAG</strong> — au-delà d'un RAG linéaire, le graphe ajoute :
+(1) une <em>analyse</em> qui route simple/complexe et résout les références via la mémoire ;
+(2) une <em>planification</em> décomposant les questions complexes ; (3) une <em>évaluation</em> de la
+pertinence des documents déclenchant une <em>reformulation</em> si besoin (auto-correction de type CRAG) ;
+(4) une <em>vérification d'ancrage</em> anti-hallucination régénérant une réponse non soutenue par les
+sources. Des budgets bornent chaque boucle pour garantir la terminaison.</p>
+</div>
+<div class="col">
+<div class="flow">START
+  &#8595;
+analyze_query   (langue, autonomie,
+  &#8595;           simple / complexe)
+plan_research   (si complexe)
+  &#8595;
+agent  &#8596;&#8596;&#8596;&#8596;&#8596;&#8596;&#8596;&#8596;&#8596;&#8594; generate
+  &#8595;  &#8593; (pertinent)      &#8595;
+tools &#8594; grade_documents  verify_grounding
+         &#8595; (hors sujet)     &#8595;
+      rewrite_query          END
+</div>
+</div>
+</div>
+
+<h2>4. Choix techniques et justifications</h2>
+<table>
+<tr><th style="width:26%">Décision</th><th>Raison</th></tr>
+<tr><td><strong>LangGraph manuel</strong> (pas <code>create_agent</code>)</td>
+<td>Contrôle explicite de chaque étape agentique ; insertion des nœuds d'évaluation, de reformulation et
+de vérification impossibles à placer dans une boucle ReAct préconstruite. Exigé par la consigne.</td></tr>
+<tr><td><strong>Embeddings ONNX / FastEmbed</strong></td>
+<td>PyTorch ne publie plus de <em>wheel</em> pour macOS x86_64 / Python 3.13 : le projet serait
+ininstallable. ONNX est aussi plus léger et plus rapide sur CPU.</td></tr>
+<tr><td><strong>Recherche hybride + RRF</strong></td>
+<td>La recherche dense seule échoue sur les sigles (DRS, ERS) et les noms propres ; BM25 les rattrape.
+La fusion par <em>Reciprocal Rank Fusion</em> combine les rangs sans normaliser des scores hétérogènes.</td></tr>
+<tr><td><strong>Normalisation des vecteurs</strong></td>
+<td>FastEmbed n'applique pas de normalisation finale : la similarité était dominée par la norme, et les
+textes génériques ressortaient devant les passages spécialisés. La normalisation restaure un vrai cosinus.</td></tr>
+<tr><td><strong>Plafond de chunks / document</strong></td>
+<td>Le corpus est déséquilibré (la page « Formule&nbsp;1 » pèse ≈ 390 chunks) ; sans plafond un document
+généraliste monopolise le top-k au détriment des pages spécialisées.</td></tr>
+<tr><td><strong>Boost par millésime</strong></td>
+<td>Avec 22 saisons quasi identiques, une question « champion 2010 » pouvait ramener une autre année ;
+un bonus déterministe réancre la recherche sur le bon millésime sans dépendre du LLM.</td></tr>
+<tr><td><strong>Sorties structurées (Pydantic)</strong></td>
+<td>Les décisions binaires (pertinence, ancrage) et l'analyse de question sont contraintes par un schéma,
+ce qui rend le routage du graphe déterministe et robuste.</td></tr>
+<tr><td><strong>Calcul de points déporté en Python</strong></td>
+<td>Un LLM se trompe régulièrement sur une somme de dix termes ; l'outil applique le barème officiel de
+façon exacte.</td></tr>
+</table>
+
+<h2>5. Résultats de l'évaluation</h2>
+<p class="small">
+Le système est évalué sur <strong>10 questions simples et 10 questions complexes</strong> (bilingues).
+Trois dimensions sont mesurées : la <strong>latence</strong> bout-en-bout, la <strong>pertinence des
+documents</strong> récupérés (<code>hit@k</code>, <code>MRR</code>) et la <strong>qualité de la réponse</strong>
+notée sur 5 par un LLM juge (fidélité aux sources, complétude, clarté).
+</p>
+
+<!-- RESULTS_TABLE -->
+
+<div class="box small">
+<strong>Lecture.</strong> <code>hit@k</code> = fraction des documents attendus effectivement récupérés ;
+<code>MRR</code> = qualité du classement (1,0 = source pertinente en tête). Les questions complexes
+présentent une latence supérieure car elles déclenchent la planification et plusieurs tours d'outils.
+L'évaluation ci-dessus a été exécutée avec le modèle léger (Llama&nbsp;3.1&nbsp;8B) afin de rester dans
+le quota gratuit journalier ; l'architecture cible utilise Llama&nbsp;3.3&nbsp;70B pour le raisonnement.
+</div>
+
+<h3>Exemple d'exécution — « Combien de titres mondiaux a gagné Max Verstappen ? »</h3>
+<p class="small" style="margin-bottom:2px">Chemin parcouru dans le graphe (question détectée <em>simple</em>) :</p>
+<div class="flow" style="white-space:normal; font-size:.7rem">analyze_query &#8594; agent &#8594; tools (recherche) &#8594; grade_documents (pertinent)
+&#8594; agent &#8594; generate &#8594; verify_grounding (ancrée) &#8594; END</div>
+<p class="small" style="margin-top:3px"><strong>Réponse.</strong> « Max Verstappen a gagné quatre titres
+mondiaux de Formule 1 [SOURCE 6]. Ces titres ont été remportés consécutivement de 2021 à 2024 avec
+l'équipe Red Bull [SOURCE 6]. » — réponse ancrée dans les sources, avec citations, dans la langue de
+la question.</p>
+
+<h2>6. Limites et pistes d'amélioration</h2>
+<div class="cols">
+<div class="col">
+<h3>Limites</h3>
+<ul>
+<li><strong>Modèle d'embeddings symétrique</strong> : la recherche dense favorise encore parfois les
+passages génériques ; le filtrage par catégorie et BM25 compensent mais ne suppriment pas le biais.</li>
+<li><strong>Appels d'outils du LLM parfois mal formés</strong> (quirk Llama/Groq) : gérés par une
+capture d'erreur qui bascule vers la rédaction, mais au prix d'une réponse moins complète.</li>
+<li><strong>Latence</strong> : la boucle agentique multiplie les appels LLM (≈ 30 s / question complexe).</li>
+<li><strong>Corpus figé</strong> : pas de mise à jour en temps réel (résultats de courses à venir absents).</li>
+</ul>
+</div>
+<div class="col">
+<h3>Pistes d'amélioration</h3>
+<ul>
+<li>Passer à un modèle d'embeddings <strong>asymétrique</strong> (e5, BGE) pour un meilleur rappel
+question→passage.</li>
+<li>Ajouter un <strong>re-ranker</strong> (cross-encoder) après la fusion pour affiner le top-k.</li>
+<li><strong>Streaming</strong> de la réponse finale token par token pour réduire la latence perçue.</li>
+<li>Étendre la mémoire à une <strong>persistance disque</strong> (SQLite) pour des sessions durables.</li>
+<li>Brancher des <strong>sources temps réel</strong> (API de résultats) pour les questions d'actualité.</li>
+</ul>
+</div>
+</div>
+
+<div class="footer">
+Code complet, corpus, visualisation du graphe et résultats d'évaluation disponibles dans le dépôt du projet.
+Rapport individuel — Master IIBDCC SMA &amp; IAD.
+</div>
+
+</body>
+</html>

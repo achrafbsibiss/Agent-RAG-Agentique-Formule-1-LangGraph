@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import functools
 import logging
+import re
 
 from langchain_community.retrievers import BM25Retriever
 from langchain_core.documents import Document as LCDocument
@@ -26,6 +27,16 @@ logger = logging.getLogger(__name__)
 # Constante d'amortissement du RRF. 60 est la valeur de la publication
 # d'origine (Cormack et al., 2009) et reste un defaut robuste.
 RRF_K = 60
+
+# Millesimes couverts par le corpus (saisons 2005-2025).
+YEAR_PATTERN = re.compile(r"\b(19[5-9]\d|20[0-2]\d)\b")
+
+# Bonus de score applique a un chunk qui mentionne l'annee demandee. Le corpus
+# compte 22 pages de saison quasi identiques : la recherche dense les percoit
+# comme des quasi-doublons et BM25 dilue le jeton d'annee derriere les mots de
+# la question. Ce bonus deterministe reancre la recherche sur le bon millesime
+# sans dependre d'une reformulation par le LLM.
+YEAR_BOOST = 0.5
 
 
 class HybridRetriever:
@@ -92,8 +103,37 @@ class HybridRetriever:
                 by_id[chunk_id] = document
                 scores[chunk_id] = scores.get(chunk_id, 0.0) + weight / (RRF_K + rank + 1)
 
+        self._apply_year_boost(query, category, scores, by_id)
+
         ranked = sorted(scores.items(), key=lambda item: item[1], reverse=True)
         return self._diversify(by_id, ranked, k)
+
+    def _apply_year_boost(
+        self,
+        query: str,
+        category: str | None,
+        scores: dict[str, float],
+        by_id: dict[str, LCDocument],
+    ) -> None:
+        """Reancre la recherche sur le millesime demande, le cas echeant.
+
+        Si la requete cite une annee (ex. « champion 2010 »), les chunks dont le
+        titre porte cette annee sont injectes dans le pool de candidats avec un
+        bonus. Sans cela, la bonne page de saison peut ne figurer dans aucune des
+        deux listes (dense ou BM25) et rester invisible, noyee parmi 22 saisons
+        quasi identiques. Modifie `scores` et `by_id` sur place.
+        """
+        years = set(YEAR_PATTERN.findall(query))
+        if not years:
+            return
+
+        for chunk in self._chunks:
+            if category is not None and chunk.metadata["category"] != category:
+                continue
+            if any(year in chunk.metadata["title"] for year in years):
+                chunk_id = chunk.metadata["chunk_id"]
+                by_id.setdefault(chunk_id, chunk)
+                scores[chunk_id] = scores.get(chunk_id, 0.0) + YEAR_BOOST
 
     def _diversify(
         self,

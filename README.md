@@ -1,7 +1,9 @@
 # 🏎️ Agent RAG Agentique — Formule 1 (LangGraph)
 
 Système **Agentic RAG** qui répond à des questions simples et complexes sur la
-Formule 1 à partir d'une base documentaire construite depuis Wikipédia. Le
+Formule 1 à partir d'une base documentaire construite depuis Wikipédia (règlement,
+écuries, pilotes, circuits, technique/moteur, stratégie, et toutes les saisons
+2005–2025). Le
 graphe de raisonnement est **entièrement écrit à la main avec LangGraph** — sans
 `create_agent` — afin de contrôler chaque étape : analyse, planification,
 récupération, auto-correction et vérification anti-hallucination.
@@ -151,3 +153,14 @@ f1_agentic_rag/
 - **Plafond de chunks par document** : le corpus est déséquilibré (la page
   « Formule 1 » pèse ~390 chunks) ; sans plafond, un document généraliste
   monopolise le top-k.
+- **Boost par millésime** : avec 22 saisons quasi identiques (2005–2025), une
+  question « champion 2010 » pouvait ramener une autre année ; un bonus
+  déterministe réancre la recherche sur le bon millésime.
+- **Répartition des modèles** : le raisonneur utilise un gros modèle
+  (Llama 3.3 70B) ; l'évaluateur de pertinence, le vérificateur d'ancrage et le
+  juge sont routés vers un modèle léger (Llama 3.1 8B) — moins coûteux en tokens
+  et soumis à des limites de débit distinctes, ce qui évite de saturer le quota
+  gratuit sur les boucles à fort volume.
+- **Robustesse** : chaque nœud à appel LLM capture les erreurs (quota 429, sortie
+  mal formée) et dégrade proprement (repli « fail-open ») au lieu de planter ;
+  l'évaluation sauvegarde ses résultats de façon incrémentale.

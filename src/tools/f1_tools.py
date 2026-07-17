@@ -86,7 +86,8 @@ def rechercher_documents(
 def rechercher_par_categorie(
     query: str,
     categorie: Literal[
-        "reglement", "ecurie", "pilote", "circuit", "glossaire", "saison", "technique", "histoire"
+        "reglement", "ecurie", "pilote", "circuit", "glossaire",
+        "saison", "technique", "strategie", "histoire",
     ],
     tool_call_id: Annotated[str, InjectedToolCallId],
 ) -> Command:
@@ -99,9 +100,10 @@ def rechercher_par_categorie(
         query: La question ou les mots cles a rechercher.
         categorie: Categorie a interroger. 'reglement' = regles sportives et
             techniques ; 'ecurie' = equipes ; 'pilote' = biographies ;
-            'circuit' = tracés ; 'glossaire' = definitions (DRS, pneus, pit stop) ;
-            'saison' = championnats 2023-2025 ; 'technique' = moteur, aero, ERS ;
-            'histoire' = histoire de la F1 et palmares.
+            'circuit' = tracés ; 'glossaire' = definitions (DRS, pneus) ;
+            'saison' = championnats 2005-2025 ; 'technique' = moteur, turbo,
+            injection, aero, ERS ; 'strategie' = arrets aux stands, depassement,
+            reglages, deroulement d'un week-end ; 'histoire' = histoire et palmares.
     """
     documents = get_retriever().search(query, k=settings.retrieval.top_k, category=categorie)
     return _retrieval_command(documents, tool_call_id, f"[{categorie}] {query}")

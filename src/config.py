@@ -53,7 +53,13 @@ class LLMConfig:
     judge_temperature: float = _env_float("JUDGE_TEMPERATURE", 0.0)
 
     groq_model: str = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+    # Modele leger pour les roles a fort volume mais faible enjeu (evaluation
+    # de pertinence, ancrage, analyse, juge). Bien moins couteux en tokens et
+    # soumis a des limites de debit distinctes : repartir la charge evite de
+    # saturer le quota du gros modele sur une simple boucle d'evaluation.
+    groq_fast_model: str = os.getenv("GROQ_FAST_MODEL", "llama-3.1-8b-instant")
     google_model: str = os.getenv("GOOGLE_MODEL", "gemini-2.0-flash")
+    google_fast_model: str = os.getenv("GOOGLE_FAST_MODEL", "gemini-2.0-flash")
     ollama_model: str = os.getenv("OLLAMA_MODEL", "llama3.1:8b")
     ollama_base_url: str = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
 
@@ -109,6 +115,7 @@ CATEGORIES: tuple[str, ...] = (
     "glossaire",
     "saison",
     "technique",
+    "strategie",
     "histoire",
 )
 

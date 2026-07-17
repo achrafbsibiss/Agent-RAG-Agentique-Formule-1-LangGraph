@@ -48,6 +48,20 @@ class GroundingGrade(BaseModel):
     reason: str = Field(description="Justification en une phrase")
 
 
+# Mots vides tres frequents en francais : suffisent a deviner la langue quand
+# l'analyse LLM est indisponible (repli hors ligne, sans appel reseau).
+_FRENCH_MARKERS = {
+    "le", "la", "les", "des", "une", "un", "est", "quel", "quelle", "combien",
+    "comment", "pourquoi", "qui", "que", "quoi", "ou", "avec", "pour", "dans",
+    "gagne", "gagné", "titres", "ecurie", "écurie", "pilote", "course",
+}
+
+
+def _looks_french(text: str) -> bool:
+    words = {word.strip("?.,!").lower() for word in text.split()}
+    return len(words & _FRENCH_MARKERS) >= 1
+
+
 def _history(messages: list[BaseMessage]) -> str:
     """Rend l'historique conversationnel sous forme lisible par le LLM."""
     turns = [
@@ -79,19 +93,28 @@ def analyze_query(state: AgentState) -> dict:
     question = messages[-1].content
 
     grader = get_llm("grader").with_structured_output(QueryAnalysis)
-    analysis: QueryAnalysis = grader.invoke(
-        prompts.ANALYZE_PROMPT.format(
-            history=_history(messages[:-1]),
-            question=question,
+    try:
+        analysis: QueryAnalysis = grader.invoke(
+            prompts.ANALYZE_PROMPT.format(
+                history=_history(messages[:-1]),
+                question=question,
+            )
         )
-    )
-
-    complexity = "complexe" if analysis.complexity.lower().startswith("complex") else "simple"
-    language = "fr" if analysis.language.lower().startswith("fr") else "en"
+        complexity = "complexe" if analysis.complexity.lower().startswith("complex") else "simple"
+        language = "fr" if analysis.language.lower().startswith("fr") else "en"
+        standalone = analysis.standalone_question
+    except Exception as exc:
+        # En cas d'echec (quota, sortie non conforme), on degrade proprement :
+        # question inchangee, langue devinee, traitement en mode simple. Le
+        # graphe poursuit au lieu de s'interrompre.
+        logger.warning("Analyse indisponible (%s) : repli sur des valeurs par defaut", type(exc).__name__)
+        standalone = question
+        complexity = "simple"
+        language = "fr" if _looks_french(question) else "en"
 
     logger.info("Analyse : langue=%s complexite=%s", language, complexity)
     return {
-        "question": analysis.standalone_question,
+        "question": standalone,
         "language": language,
         "complexity": complexity,
         # Un nouveau tour repart d'un contexte documentaire vierge.
@@ -99,7 +122,7 @@ def analyze_query(state: AgentState) -> dict:
         "tool_iterations": 0,
         "rewrites": 0,
         "generation_retries": 0,
-        "notes": [f"analyse: {language}/{complexity} | question autonome: {analysis.standalone_question}"],
+        "notes": [f"analyse: {language}/{complexity} | question autonome: {standalone}"],
     }
 
 
@@ -113,13 +136,19 @@ def plan_research(state: AgentState) -> dict:
     recherche et ne recupere que la moitie des faits necessaires.
     """
     planner = get_llm("reasoner").with_structured_output(ResearchPlan)
-    plan: ResearchPlan = planner.invoke(
-        prompts.PLAN_PROMPT.format(
-            question=state["question"],
-            max_steps=settings.graph.max_subquestions,
+    try:
+        plan: ResearchPlan = planner.invoke(
+            prompts.PLAN_PROMPT.format(
+                question=state["question"],
+                max_steps=settings.graph.max_subquestions,
+            )
         )
-    )
-    steps = plan.sub_questions[: settings.graph.max_subquestions]
+        steps = plan.sub_questions[: settings.graph.max_subquestions]
+    except Exception as exc:
+        # Sans plan, l'agent traite la question d'un bloc : moins optimal mais
+        # fonctionnel. Preferable a un arret du graphe.
+        logger.warning("Planification indisponible (%s) : poursuite sans plan", type(exc).__name__)
+        steps = []
     logger.info("Plan : %d sous-question(s)", len(steps))
     return {"plan": steps, "notes": [f"plan: {len(steps)} sous-questions"]}
 
@@ -186,16 +215,23 @@ def grade_documents(state: AgentState) -> dict:
         return {"documents_relevant": False, "notes": ["evaluation: aucun document recupere"]}
 
     grader = get_llm("grader").with_structured_output(RelevanceGrade)
-    grade: RelevanceGrade = grader.invoke(
-        prompts.GRADE_PROMPT.format(
-            question=state["question"],
-            documents=format_documents(documents),
+    try:
+        grade: RelevanceGrade = grader.invoke(
+            prompts.GRADE_PROMPT.format(
+                question=state["question"],
+                documents=format_documents(documents),
+            )
         )
-    )
-    logger.info("Pertinence : %s (%s)", grade.relevant, grade.reason)
+        relevant, reason = grade.relevant, grade.reason
+    except Exception as exc:
+        # Repli optimiste : on considere les documents exploitables et on laisse
+        # la redaction trancher, plutot que de boucler en reformulation.
+        logger.warning("Evaluation indisponible (%s) : documents supposes pertinents", type(exc).__name__)
+        relevant, reason = True, "evaluation indisponible (repli)"
+    logger.info("Pertinence : %s (%s)", relevant, reason)
     return {
-        "documents_relevant": grade.relevant,
-        "notes": [f"pertinence={grade.relevant}: {grade.reason}"],
+        "documents_relevant": relevant,
+        "notes": [f"pertinence={relevant}: {reason}"],
     }
 
 
@@ -243,22 +279,33 @@ def generate(state: AgentState) -> dict:
         message = (
             "Je n'ai trouve aucun document pertinent dans la base pour repondre a cette "
             "question. Elle sort probablement du perimetre du corpus (Formule 1 : "
-            "reglement, ecuries, pilotes, circuits, technique, saisons 2023-2025)."
+            "reglement, ecuries, pilotes, circuits, technique, strategie, saisons 2005-2025)."
             if language == "fr"
             else "I could not find any relevant document in the knowledge base for this "
             "question. It likely falls outside the corpus scope (Formula 1: regulations, "
-            "teams, drivers, circuits, technology, 2023-2025 seasons)."
+            "teams, drivers, circuits, technology, strategy, 2005-2025 seasons)."
         )
         return {"answer": message, "messages": [AIMessage(message)], "grounded": True}
 
     writer = get_llm("reasoner")
-    answer = writer.invoke(
-        prompts.GENERATE_PROMPT.format(
-            question=state["question"],
-            documents=format_documents(documents),
-            language="francais" if language == "fr" else "anglais",
+    try:
+        answer = writer.invoke(
+            prompts.GENERATE_PROMPT.format(
+                question=state["question"],
+                documents=format_documents(documents),
+                language="francais" if language == "fr" else "anglais",
+            )
+        ).content
+    except Exception as exc:
+        logger.warning("Redaction indisponible (%s)", type(exc).__name__)
+        answer = (
+            "Le service de generation est momentanement indisponible (quota ou reseau). "
+            "Reessayez dans quelques instants."
+            if language == "fr"
+            else "The generation service is temporarily unavailable (quota or network). "
+            "Please try again shortly."
         )
-    ).content
+        return {"answer": answer, "messages": [AIMessage(answer)], "grounded": True}
 
     return {"answer": answer, "messages": [AIMessage(answer)], "notes": ["reponse redigee"]}
 
@@ -273,18 +320,25 @@ def verify_grounding(state: AgentState) -> dict:
         return {"grounded": True}
 
     grader = get_llm("grader").with_structured_output(GroundingGrade)
-    grade: GroundingGrade = grader.invoke(
-        prompts.GROUNDING_PROMPT.format(
-            documents=format_documents(documents),
-            answer=state["answer"],
+    try:
+        grade: GroundingGrade = grader.invoke(
+            prompts.GROUNDING_PROMPT.format(
+                documents=format_documents(documents),
+                answer=state["answer"],
+            )
         )
-    )
-    logger.info("Ancrage : %s (%s)", grade.grounded, grade.reason)
+        grounded, reason = grade.grounded, grade.reason
+    except Exception as exc:
+        # Repli : on livre la reponse telle quelle plutot que de boucler ou
+        # d'echouer. Le pire cas est une reponse non verifiee, pas un plantage.
+        logger.warning("Verification indisponible (%s) : livraison en l'etat", type(exc).__name__)
+        grounded, reason = True, "verification indisponible (repli)"
+    logger.info("Ancrage : %s (%s)", grounded, reason)
 
     update: dict = {
-        "grounded": grade.grounded,
-        "notes": [f"ancrage={grade.grounded}: {grade.reason}"],
+        "grounded": grounded,
+        "notes": [f"ancrage={grounded}: {reason}"],
     }
-    if not grade.grounded:
+    if not grounded:
         update["generation_retries"] = state.get("generation_retries", 0) + 1
     return update

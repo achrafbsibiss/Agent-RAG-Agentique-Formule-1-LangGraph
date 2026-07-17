@@ -63,18 +63,46 @@ PAGES: list[tuple[str, str, str]] = [
     ("Glossary of motorsport terms", "glossaire", "en"),
     ("Drag reduction system", "glossaire", "en"),
     ("Formula One tyres", "glossaire", "en"),
-    ("Pit stop", "glossaire", "en"),
 
-    # ---------------- Technique ----------------
+    # ---------------- Technique et motorisation ----------------
     ("Formula One car", "technique", "en"),
     ("Formula One engines", "technique", "en"),
     ("Kinetic energy recovery system", "technique", "en"),
     ("Ground effect (cars)", "technique", "en"),
     ("Downforce", "technique", "en"),
+    # Approfondissement moteur : architecture, suralimentation, injection.
+    ("Turbocharger", "technique", "en"),
+    ("V6 engine", "technique", "en"),
+    ("Fuel injection", "technique", "en"),
 
-    # ---------------- Saisons recentes ----------------
-    ("2024 Formula One World Championship", "saison", "en"),
+    # ---------------- Strategie de course ----------------
+    ("Formula One race weekend", "strategie", "en"),
+    ("Racing setup", "strategie", "en"),
+    ("Overtaking", "strategie", "en"),
+    ("Drafting (aerodynamics)", "strategie", "en"),
+    ("Pit stop", "strategie", "en"),
+
+    # ---------------- Saisons 2005-2025 ----------------
+    ("2005 Formula One World Championship", "saison", "en"),
+    ("2006 Formula One World Championship", "saison", "en"),
+    ("2007 Formula One World Championship", "saison", "en"),
+    ("2008 Formula One World Championship", "saison", "en"),
+    ("2009 Formula One World Championship", "saison", "en"),
+    ("2010 Formula One World Championship", "saison", "en"),
+    ("2011 Formula One World Championship", "saison", "en"),
+    ("2012 Formula One World Championship", "saison", "en"),
+    ("2013 Formula One World Championship", "saison", "en"),
+    ("2014 Formula One World Championship", "saison", "en"),
+    ("2015 Formula One World Championship", "saison", "en"),
+    ("2016 Formula One World Championship", "saison", "en"),
+    ("2017 Formula One World Championship", "saison", "en"),
+    ("2018 Formula One World Championship", "saison", "en"),
+    ("2019 Formula One World Championship", "saison", "en"),
+    ("2020 Formula One World Championship", "saison", "en"),
+    ("2021 Formula One World Championship", "saison", "en"),
+    ("2022 Formula One World Championship", "saison", "en"),
     ("2023 Formula One World Championship", "saison", "en"),
+    ("2024 Formula One World Championship", "saison", "en"),
     ("2025 Formula One World Championship", "saison", "en"),
 
     # ---------------- Histoire et palmares ----------------

@@ -124,12 +124,30 @@ def main() -> None:
     questions = ALL_QUESTIONS[: args.limit] if args.limit else ALL_QUESTIONS
     print(f"Evaluation de {len(questions)} questions avec {describe_llm()}\n")
 
-    rows = [_run_one(graph, question) for question in questions]
-    frame = pd.DataFrame(rows)
-
     csv_path = REPORTS_DIR / "evaluation.csv"
-    frame.to_csv(csv_path, index=False)
+    rows: list[dict] = []
+    for question in questions:
+        try:
+            rows.append(_run_one(graph, question))
+        except Exception as exc:  # quota, reseau : on n'annule pas tout le run
+            logger.warning("[%s] ECHEC (%s) : question ignoree", question.id, type(exc).__name__)
+            rows.append({
+                "id": question.id, "categorie": question.category,
+                "langue": question.language, "question": question.question,
+                "erreur": f"{type(exc).__name__}: {exc}",
+            })
+        # Sauvegarde incrementale : un plantage ulterieur ne perd pas les
+        # questions deja evaluees.
+        pd.DataFrame(rows).to_csv(csv_path, index=False)
+
+    frame = pd.DataFrame(rows)
+    # Seules les lignes reellement evaluees comptent dans les agregats.
+    frame = frame[frame.get("latence_s").notna()] if "latence_s" in frame else frame
     print(f"\nCSV detaille    -> {csv_path}")
+
+    if frame.empty:
+        print("Aucune question evaluee (quota epuise ?). Rapport non genere.")
+        return
 
     summary = _aggregate(frame)
     _write_report(frame, summary)
