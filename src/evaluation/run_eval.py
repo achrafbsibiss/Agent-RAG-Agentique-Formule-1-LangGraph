@@ -107,10 +107,34 @@ def _write_report(frame: pd.DataFrame, summary: pd.DataFrame) -> None:
     print(f"\nRapport Markdown -> {report_path}")
 
 
+def _upsert_csv(csv_path, new_rows: list[dict]) -> pd.DataFrame:
+    """Fusionne les nouvelles lignes dans le CSV existant, en remplacant par id.
+
+    Permet de re-evaluer un sous-ensemble (ex. les questions complexes apres une
+    coupure reseau) sans perdre les questions deja correctement evaluees.
+    """
+    frame_new = pd.DataFrame(new_rows)
+    if csv_path.exists():
+        existing = pd.read_csv(csv_path)
+        kept = existing[~existing["id"].isin(frame_new["id"])]
+        merged = pd.concat([kept, frame_new], ignore_index=True)
+    else:
+        merged = frame_new
+    # Ordre stable : suit l'ordre de reference des questions.
+    order = {q.id: i for i, q in enumerate(ALL_QUESTIONS)}
+    merged = merged.sort_values("id", key=lambda s: s.map(order)).reset_index(drop=True)
+    merged.to_csv(csv_path, index=False)
+    return merged
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Evaluation du systeme RAG agentique")
     parser.add_argument("--limit", type=int, default=0,
                         help="n'evaluer que les N premieres questions (test rapide)")
+    parser.add_argument("--categorie", choices=["simple", "complexe"], default=None,
+                        help="n'evaluer qu'une categorie ; fusionne avec le CSV existant")
+    parser.add_argument("--pause", type=float, default=0.0,
+                        help="pause en secondes entre deux questions (menage le debit API)")
     parser.add_argument("--verbose", action="store_true")
     args = parser.parse_args()
 
@@ -121,12 +145,16 @@ def main() -> None:
     # Le graphe est sans memoire : chaque question est isolee.
     graph = build_graph(checkpointer=None)
 
-    questions = ALL_QUESTIONS[: args.limit] if args.limit else ALL_QUESTIONS
+    questions = ALL_QUESTIONS
+    if args.categorie:
+        questions = [q for q in questions if q.category == args.categorie]
+    if args.limit:
+        questions = questions[: args.limit]
     print(f"Evaluation de {len(questions)} questions avec {describe_llm()}\n")
 
     csv_path = REPORTS_DIR / "evaluation.csv"
     rows: list[dict] = []
-    for question in questions:
+    for index, question in enumerate(questions):
         try:
             rows.append(_run_one(graph, question))
         except Exception as exc:  # quota, reseau : on n'annule pas tout le run
@@ -136,17 +164,19 @@ def main() -> None:
                 "langue": question.language, "question": question.question,
                 "erreur": f"{type(exc).__name__}: {exc}",
             })
-        # Sauvegarde incrementale : un plantage ulterieur ne perd pas les
-        # questions deja evaluees.
-        pd.DataFrame(rows).to_csv(csv_path, index=False)
+        # Sauvegarde incrementale (upsert) : un plantage ulterieur ne perd ni les
+        # questions de ce run, ni celles deja presentes dans le CSV.
+        _upsert_csv(csv_path, rows)
+        if args.pause and index < len(questions) - 1:
+            time.sleep(args.pause)
 
-    frame = pd.DataFrame(rows)
+    frame = pd.read_csv(csv_path)
     # Seules les lignes reellement evaluees comptent dans les agregats.
-    frame = frame[frame.get("latence_s").notna()] if "latence_s" in frame else frame
+    frame = frame[frame["latence_s"].notna()] if "latence_s" in frame else frame
     print(f"\nCSV detaille    -> {csv_path}")
 
     if frame.empty:
-        print("Aucune question evaluee (quota epuise ?). Rapport non genere.")
+        print("Aucune question evaluee. Rapport non genere.")
         return
 
     summary = _aggregate(frame)

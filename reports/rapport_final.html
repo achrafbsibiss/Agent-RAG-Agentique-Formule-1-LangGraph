@@ -171,13 +171,24 @@ documents</strong> récupérés (<code>hit@k</code>, <code>MRR</code>) et la <st
 notée sur 5 par un LLM juge (fidélité aux sources, complétude, clarté).
 </p>
 
-<p class="meta">Modèle : <code>groq:llama-3.3-70b-versatile (roles legers: llama-3.1-8b-instant)</code> · 2 questions évaluées.</p><table><tr><th style="width:24%">Catégorie</th><th class="num">Latence (s)</th><th class="num">hit@k</th><th class="num">MRR</th><th class="num">Fidélité /5</th><th class="num">Complétude /5</th><th class="num">Clarté /5</th></tr><tr><td><strong>Questions simples (2)</strong></td><td class="num">78.04</td><td class="num">0.75</td><td class="num">0.58</td><td class="num">4.00</td><td class="num">4.00</td><td class="num">5.00</td></tr><tr><td><strong>Global (2)</strong></td><td class="num">78.04</td><td class="num">0.75</td><td class="num">0.58</td><td class="num">4.00</td><td class="num">4.00</td><td class="num">5.00</td></tr></table>
+<p class="meta">Modèle : <code>groq:llama-3.1-8b-instant (roles legers: llama-3.1-8b-instant)</code> · 20 questions évaluées.</p><table><tr><th style="width:24%">Catégorie</th><th class="num">Latence (s)</th><th class="num">hit@k</th><th class="num">MRR</th><th class="num">Fidélité /5</th><th class="num">Complétude /5</th><th class="num">Clarté /5</th></tr><tr><td><strong>Questions simples (10)</strong></td><td class="num">111.73</td><td class="num">0.65</td><td class="num">0.46</td><td class="num">3.00</td><td class="num">2.90</td><td class="num">3.50</td></tr><tr><td><strong>Questions complexes (10)</strong></td><td class="num">110.62</td><td class="num">0.70</td><td class="num">0.65</td><td class="num">4.10</td><td class="num">3.40</td><td class="num">4.50</td></tr><tr><td><strong>Global (20)</strong></td><td class="num">111.18</td><td class="num">0.68</td><td class="num">0.56</td><td class="num">3.55</td><td class="num">3.15</td><td class="num">4.00</td></tr></table>
 
 <div class="box small">
 <strong>Lecture.</strong> <code>hit@k</code> = fraction des documents attendus effectivement récupérés ;
 <code>MRR</code> = qualité du classement (1,0 = source pertinente en tête). Les questions complexes
 présentent une latence supérieure car elles déclenchent la planification et plusieurs tours d'outils.
+L'évaluation ci-dessus a été exécutée avec le modèle léger (Llama&nbsp;3.1&nbsp;8B) afin de rester dans
+le quota gratuit journalier ; l'architecture cible utilise Llama&nbsp;3.3&nbsp;70B pour le raisonnement.
 </div>
+
+<h3>Exemple d'exécution — « Combien de titres mondiaux a gagné Max Verstappen ? »</h3>
+<p class="small" style="margin-bottom:2px">Chemin parcouru dans le graphe (question détectée <em>simple</em>) :</p>
+<div class="flow" style="white-space:normal; font-size:.7rem">analyze_query &#8594; agent &#8594; tools (recherche) &#8594; grade_documents (pertinent)
+&#8594; agent &#8594; generate &#8594; verify_grounding (ancrée) &#8594; END</div>
+<p class="small" style="margin-top:3px"><strong>Réponse.</strong> « Max Verstappen a gagné quatre titres
+mondiaux de Formule 1 [SOURCE 6]. Ces titres ont été remportés consécutivement de 2021 à 2024 avec
+l'équipe Red Bull [SOURCE 6]. » — réponse ancrée dans les sources, avec citations, dans la langue de
+la question.</p>
 
 <h2>6. Limites et pistes d'amélioration</h2>
 <div class="cols">

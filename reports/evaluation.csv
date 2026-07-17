@@ -1,0 +1,267 @@
+id,categorie,langue,question,latence_s,nb_docs,hit_at_k,mrr,grounded,complexite_detectee,fidelite,completude,clarte,sources,commentaire_juge,reponse
+S01,simple,fr,Qu'est-ce que le DRS en Formule 1 ?,73.42,8,0.5,0.167,True,simple,4,4,5,2013 Formula One World Championship | 2024 Formula One World Championship | Championnat du monde de Formule 1 2024 | Drag reduction system | Formule 1 | History of Formula One,"La réponse est globalement fiable, mais elle invente légèrement l'impact du DRS sur la compétitivité. La réponse est complète et claire.","**Réponse finale :**
+
+Le Drag Reduction System (DRS) est un système utilisé en Formule 1 pour améliorer la compétitivité et la sécurité des courses. Il permet aux pilotes de réduire la résistance aérodynamique de leur voiture en ouvrant un aileron spécial, ce qui leur permet de passer leur adversaire lors d'un dépassement.
+
+**Histoire du DRS :**
+
+Le DRS a été introduit en Formule 1 en 2011 [SOURCE 6]. Il a été utilisé jusqu'en 2025, date à laquelle il a été remplacé par un système d'aérodynamique active dans le cadre des nouvelles réglementations de 2026 [SOURCE 8]. Le DRS a été utilisé dans d'autres championnats, tels que la Formule Renault 3.5, la Deutsche Tourenwagen Masters et la FIA Formula 2 Championship [SOURCE 6].
+
+**Règles de fonctionnement du DRS :**
+
+Les règles de fonctionnement du DRS ont évolué au fil des ans. En 2013, la FIA a décidé de restreindre l'utilisation du DRS aux zones spécifiques désignées sur chaque circuit, dans le but d'améliorer la sécurité [SOURCE 5]. En 2024, les règles ont été encore modifiées pour permettre aux pilotes d'utiliser le DRS un tour après le départ de course, la reprise de la sécurité automobile ou la reprise après un drapeau rouge [SOURCE 7].
+
+**Impact du DRS sur la compétitivité :**
+
+Le DRS a été conçu pour améliorer la compétitivité et la sécurité des courses. Il permet aux pilotes de passer leur adversaire lors d'un dépassement, ce qui peut être décisif dans les courses. Les règles de fonctionnement du DRS ont été ajustées pour encourager les dépassements plus tôt dans la course et augmenter la compétitivité dans les premières étapes de la course [SOURCE 7].
+
+**Fin de l'utilisation du DRS en Formule 1 :**
+
+Le DRS a été retiré de la Formule 1 à partir de la saison 2026, remplacé par un système d'aérodynamique active dans le cadre des nouvelles réglementations [SOURCE 8]."
+S02,simple,en,What does a yellow flag mean in Formula One?,82.66,4,1.0,1.0,True,simple,4,4,5,2010 Formula One World Championship | Formule 1 | Racing flags,"La réponse est fiable et claire, mais elle pourrait être plus complète en abordant les différences entre la Formule 1 et les autres championnats de course.","**Réponse finale :**
+
+In Formula One, a yellow flag indicates that there is a hazard on the track, typically a crash, a stopped car, debris, or light rain. This flag is displayed at the starter's stand or a marshal station, and it requires drivers to slow down and exercise caution.
+
+The procedures for displaying the yellow flag in Formula One vary depending on the location of the hazard. According to [SOURCE 2], the yellow flag displayed at the starter's stand or a marshal station indicates that there is a hazard ""downstream"" of the station.
+
+In contrast to NASCAR and IndyCar, where a single yellow flag waved from the starter's stand places the race under caution and a pace car leads the field at a safe speed [SOURCE 1], in Formula One, the yellow flag is used to indicate a hazard on the track, but it does not necessarily mean that the race will be stopped.
+
+In Formula One, the safety car is deployed in certain situations, such as heavy rain or a serious accident, to ensure the safety of the drivers [SOURCE 4]. However, the yellow flag is used to indicate a hazard on the track, and drivers are required to slow down and exercise caution.
+
+**Références :**
+
+* [SOURCE 1] : Racing flags — Full-course yellow
+* [SOURCE 2] : Racing flags — Yellow flag
+* [SOURCE 3] : Formule 1 — Sécurité
+* [SOURCE 4] : 2010 Formula One World Championship — Safety car"
+S03,simple,fr,Combien de points rapporte une victoire en Grand Prix ?,201.72,4,0.0,0.0,True,simple,5,5,5,2017 Formula One World Championship | 2021 Formula One World Championship | Championnat du monde de Formule 1 2024,"La réponse est précise, complète et claire, et chaque fait est soutenu par les passages.","La victoire en Grand Prix rapporte 25 points au championnat du monde des pilotes, selon le système de scoring utilisé en Formule 1 [SOURCE 2].
+
+En effet, selon le système de scoring utilisé en 2017, les points étaient attribués aux dix premiers classés, avec la suivante structure :
+
+- 1er : 25 points
+- 2e : 18 points
+- 3e : 15 points
+- 4e : 12 points
+- 5e : 10 points
+- 6e : 8 points
+- 7e : 6 points
+- 8e : 4 points
+- 9e : 2 points
+- 10e : 1 point
+
+Ce système de scoring est toujours en vigueur en Formule 1, comme en témoignent les résultats des Grands Prix de la saison 2024 [SOURCE 1 et SOURCE 4].
+
+Il est important de noter que les points sont attribués uniquement aux pilotes qui ont terminé la course, et que les pilotes qui ont abandonné la course ne marquent aucun point.
+
+En résumé, la victoire en Grand Prix rapporte 25 points au championnat du monde des pilotes, selon le système de scoring utilisé en Formule 1."
+S04,simple,fr,A quoi sert un arret au stand (pit stop) en course ?,159.4,8,1.0,0.143,True,simple,4,4,5,2010 Formula One World Championship | Championnat du monde de Formule 1 2024 | Formule 1 | McLaren | Pit stop,"La réponse est globalement fiable, mais elle invente un peu en disant que la Formule 1 est l'une des seules disciplines où les arrêts au stand sont autorisés. En fait, la Formule E autorise également les arrêts au stand, comme le montre le passage [SOURCE 8]. La réponse traite bien les aspects de la performance et de la sécurité, mais elle pourrait être plus complète en abordant d'autres aspects, comme la stratégie des équipes ou les conséquences d'un arrêt au stand.","L'intérêt d'un arrêt au stand en course de Formule 1 est crucial pour les équipes et les pilotes. En effet, un arrêt au stand permet de remplacer les pneus usés par de nouveaux, ce qui améliore la performance et la sécurité du véhicule.
+
+En termes de performance, les pneus sont un élément clé dans la Formule 1. Les pneus usés peuvent causer une perte de grip, ce qui affecte la vitesse et la stabilité du véhicule. En remplaçant les pneus usés par de nouveaux, les pilotes peuvent gagner en vitesse et en précision, ce qui leur permet de prendre des positions stratégiques sur la piste.
+
+En termes de sécurité, les arrêts au stand sont également essentiels. Les pneus usés peuvent causer des problèmes de grip, ce qui peut entraîner des accidents. En remplaçant les pneus usés par de nouveaux, les pilotes peuvent réduire le risque d'accident et assurer leur sécurité.
+
+En comparaison avec d'autres disciplines, la Formule 1 est l'une des seules où les arrêts au stand sont autorisés. En effet, les règles de la Formule 1 permettent aux équipes de remplacer les pneus usés par de nouveaux pendant la course, ce qui n'est pas le cas dans d'autres disciplines comme la NASCAR ou la Formule E [SOURCE 8].
+
+En résumé, les arrêts au stand sont un élément clé dans la Formule 1, car ils permettent de remplacer les pneus usés par de nouveaux, ce qui améliore la performance et la sécurité du véhicule."
+S05,simple,fr,Ou se situe le circuit de Monza ?,63.88,4,1.0,1.0,True,simple,5,4,5,Circuit de Monaco | Monza Circuit,"La réponse est fiable et complète, mais pourrait être plus concise et directe dans sa présentation.","Le circuit de Monza est situé près de la ville de Monza, au nord de Milan, en Italie. [SOURCE 1]
+
+En effet, selon l'introduction du circuit de Monza, il est situé à proximité de la ville de Monza, qui se trouve au nord de Milan, en Italie. [SOURCE 1]
+
+Il convient de noter que Monza est également connue pour être l'hôte du Grand Prix d'Italie, qui a été organisé sur ce circuit depuis 1949, à l'exception de l'édition de 1980 qui a été annulée en raison de travaux de rénovation. [SOURCE 1]
+
+En résumé, le circuit de Monza est situé près de la ville de Monza, au nord de Milan, en Italie, et est connu pour être l'hôte du Grand Prix d'Italie. [SOURCE 1]"
+S06,simple,en,What is a safety car used for?,86.06,4,1.0,1.0,True,simple,4,4,5,2010 Formula One World Championship | Safety car | Safety in Formula One,"La réponse est globalement fiable, mais elle invente légèrement l'objectif principal du safety car en disant qu'il est de 'protéger les pilotes et les spectateurs en cas d'incident majeur sur la piste'. En fait, l'objectif principal est de permettre aux maréchaux de récupérer les voitures endommagées ou défaillantes sans risquer de mettre en danger les autres pilotes. La réponse est également un peu incomplète car elle ne traite pas de l'utilisation du safety car en cas de mauvais temps.","La sécurité est une priorité absolue dans la Formule 1, et le safety car est un élément clé de ce système de sécurité. Le safety car est un véhicule qui peut être déployé par le directeur de course pour réduire la vitesse des concurrents, généralement après un incident qui nécessite l'intervention des maréchaux, tels que la récupération d'une voiture endommagée ou défaillante [SOURCE 4].
+
+L'objectif principal du safety car est de protéger les pilotes et les spectateurs en cas d'incident majeur sur la piste. En réduisant la vitesse des concurrents, le safety car permet aux maréchaux de récupérer les voitures endommagées ou défaillantes sans risquer de mettre en danger les autres pilotes [SOURCE 1].
+
+Le safety car a été introduit officiellement en 1993, mais il a été utilisé pour la première fois en 1973 lors du Grand Prix du Canada, où un Porsche 914 a été envoyé sur la piste pour contrôler les voitures après plusieurs incidents et mauvais temps [SOURCE 2].
+
+En cas d'incident, le safety car est déployé pour permettre aux maréchaux de récupérer les voitures endommagées ou défaillantes, et pour réduire la vitesse des concurrents pour éviter d'autres accidents. Le safety car est un élément essentiel de la sécurité en Formule 1, et il a été utilisé à plusieurs reprises dans l'histoire de la discipline [SOURCE 3].
+
+En résumé, le safety car est un véhicule qui peut être déployé par le directeur de course pour réduire la vitesse des concurrents en cas d'incident, et il est un élément clé de la sécurité en Formule 1."
+S07,simple,fr,Qu'est-ce que le KERS ?,83.61,4,1.0,1.0,True,simple,0,0,0,Formula One engines | Kinetic energy recovery system | McLaren,"echec du juge : Error code: 400 - {'error': {'message': ""Failed to call a function. Please adjust your prompt. See 'failed_generation' for more details."", 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': '<function=QualityScore> {""fidelite"": 4, ""completude"": 4, ""clarte"": 5, ""commentaire"": ""La réponse est généralement fiable, mais elle invente légèrement la notion d\'""augmentation de puissance de 80 chevaux-vapeur"" qui n\'est pas mentionnée dans les passages. La réponse est complète et claire, mais pourrait être améliorée en évitant les inventions factuelles.""} </function>'}}","**Réponse finale**
+
+Le KERS, ou système de récupération d'énergie cinétique, est un système utilisé en Formule 1 pour récupérer l'énergie cinétique générée par les freins de la voiture lors de la décélération. Cette énergie est ensuite convertie en électricité et stockée dans une batterie, qui peut être utilisée pour augmenter la puissance du moteur pendant une période limitée.
+
+**Histoire du KERS en Formule 1**
+
+Le KERS a été introduit en Formule 1 en 2009, mais il n'a été utilisé que par quatre équipes : Ferrari, Renault, BMW et McLaren [SOURCE 2]. Les équipes Renault et BMW ont finalement arrêté d'utiliser le système pendant la saison [SOURCE 2]. McLaren Mercedes a été la première équipe à remporter une course avec un véhicule équipé de KERS, grâce à la victoire de Lewis Hamilton au Grand Prix de Hongrie en 2009 [SOURCE 2].
+
+**Utilisation du KERS**
+
+L'utilisation du KERS était toujours facultative en Formule 1, mais les équipes qui l'utilisaient pouvaient bénéficier d'une augmentation de puissance de 80 chevaux-vapeur pendant une période de 6 secondes [SOURCE 1]. Le KERS a été utilisé par plusieurs équipes en 2011, mais pas par toutes [SOURCE 1]. En 2012, seules deux équipes, Marussia et HRT, n'utilisaient pas le KERS, tandis que toutes les équipes avaient adopté le système en 2013 [SOURCE 4].
+
+**Conclusion**
+
+En résumé, le KERS est un système utilisé en Formule 1 pour récupérer l'énergie cinétique générée par les freins de la voiture et la convertir en électricité stockée dans une batterie. Le système a été introduit en 2009 et a été utilisé par plusieurs équipes, mais son utilisation n'était pas obligatoire. En 2013, toutes les équipes avaient adopté le KERS.
+
+**Sources**
+
+* [SOURCE 1] Kinetic energy recovery system — Formula One
+* [SOURCE 2] Kinetic energy recovery system — Formula One
+* [SOURCE 3] McLaren — Racing history: Formula One
+* [SOURCE 4] Formula One engines — 2006–2013"
+S08,simple,en,How many world championships has Lewis Hamilton won?,204.26,7,1.0,0.333,False,simple,4,4,5,2019 Formula One World Championship | Charles Leclerc | Lewis Hamilton | Max Verstappen,"La réponse est fiable, mais elle manque de précision sur les années précédant 2013. La réponse est claire et bien structurée, mais elle ne traite pas tous les aspects de la question (completude).","Lewis Hamilton has won a total of seven world championships. 
+
+He won his first championship title in 2008, when he was teammates with Felipe Massoer [pas de passage disponible]. 
+
+Hamilton then went on to win his second championship title in 2014, after a run of five consecutive race victories towards the end of the season, and clinched the title at the final round in Abu Dhabi [SOURCE 7].
+
+He successfully defended the World Drivers' Championship for the second year running in 2015, winning his third championship title [pas de passage disponible]. 
+
+Hamilton then won his fourth championship title in 2017, his fifth in 2018, and his sixth in 2019, when he won his title at the United States Grand Prix [SOURCE 6].
+
+He then broke several records across his 2020 campaign, including the all-time win record at the Portuguese Grand Prix, to claim his record-equalling seventh championship title [SOURCE 5].
+
+Hamilton became the first driver to surpass 100 race wins and pole positions in 2021, but ended runner-up to Max Verstappen amidst a disputed finish [SOURCE 5].
+
+Note : Les passages disponibles ne permettent pas de connaître le nombre exact de championnats gagnés par Lewis Hamilton avant 2013."
+S09,simple,fr,Qu'est-ce que le parc ferme en Formule 1 ?,156.2,4,0.0,0.0,True,simple,0,0,0,2015 Formula One World Championship | 2025 Formula One World Championship | Circuit de Spa-Francorchamps | Safety in Formula One,echec du juge : Connection error.,"**Parc fermé en Formule 1**
+
+Le parc fermé en Formule 1 est un concept qui vise à assurer la sécurité des pilotes et des équipes lors des courses. Il s'agit d'une zone délimitée où les voitures sont stockées et où les équipes peuvent effectuer les réparations nécessaires sans être perturbées par les spectateurs ou les autres voitures.
+
+**Définition du parc fermé**
+
+Le parc fermé est défini comme suit : ""La zone délimitée où les voitures sont stockées et où les équipes peuvent effectuer les réparations nécessaires"" [SOURCE 1]. Cette zone est généralement située à l'extérieur du circuit, mais peut également être située à l'intérieur du circuit, en fonction de la configuration du circuit et des besoins des équipes.
+
+**Fonctionnement du parc fermé**
+
+Lorsqu'une voiture entre dans le parc fermé, elle est considérée comme étant hors course et ne peut pas être réintroduite dans la course sans autorisation expresse de la direction de course. Les équipes peuvent alors effectuer les réparations nécessaires, telles que la réparation de la voiture, le changement de pneus, etc. [SOURCE 2].
+
+**Sécurité dans le parc fermé**
+
+La sécurité est une priorité absolue dans le parc fermé. Les équipes doivent respecter les règles de sécurité établies par la FIA, qui incluent la mise en place de barrières de sécurité, la présence de personnel de sécurité, etc. [SOURCE 3].
+
+**Évolution du parc fermé**
+
+Le parc fermé a évolué au fil des ans pour répondre aux besoins des équipes et des pilotes. Par exemple, la FIA a introduit des règles pour réguler les réparations dans le parc fermé, telles que la limite de temps pour les réparations, etc. [SOURCE 4].
+
+En résumé, le parc fermé en Formule 1 est une zone délimitée où les voitures sont stockées et où les équipes peuvent effectuer les réparations nécessaires sans être perturbées. La sécurité est une priorité absolue dans le parc fermé, et les équipes doivent respecter les règles de sécurité établies par la FIA."
+S10,simple,fr,A quoi sert un turbocompresseur dans un moteur ?,6.12,0,0.0,0.0,True,simple,0,0,0,,echec du juge : Connection error.,"Je n'ai trouve aucun document pertinent dans la base pour repondre a cette question. Elle sort probablement du perimetre du corpus (Formule 1 : reglement, ecuries, pilotes, circuits, technique, strategie, saisons 2005-2025)."
+C01,complexe,en,Compare Max Verstappen and Lewis Hamilton in terms of world titles won.,116.96,7,1.0,1.0,False,simple,4,3,5,Lewis Hamilton | Max Verstappen,"La réponse est fiable, mais elle manque d'informations sur les titres de champion du monde de Lewis Hamilton, ce qui la rend incomplète. La structure et la clarté de la réponse sont excellentes.","**Comparaison entre Max Verstappen et Lewis Hamilton en termes de titres de champion du monde**
+
+Max Verstappen et Lewis Hamilton sont deux pilotes de Formule 1 très compétitifs qui ont marqué l'histoire du sport. Lorsqu'il s'agit de titres de champion du monde, les deux pilotes ont une histoire différente.
+
+**Titres de champion du monde**
+
+Max Verstappen a remporté trois titres de champion du monde en 2021, 2022 et 2023 [SOURCE 2]. Il a également remporté un titre en 2024 malgré les difficultés de son équipe Red Bull [SOURCE 2]. En revanche, Lewis Hamilton a remporté sept titres de champion du monde [manquant : information sur les titres de Lewis Hamilton].
+
+**Conclusion**
+
+En conclusion, Max Verstappen a remporté trois titres de champion du monde, tandis que Lewis Hamilton a remporté sept titres. Il est donc clair que Lewis Hamilton a une avance significative en termes de titres de champion du monde."
+C02,complexe,fr,"Combien de points marque un pilote qui finit 1er, 3e puis 2e sur trois Grands Prix ?",121.84,4,0.0,0.0,True,simple,5,4,4,2005 Formula One World Championship | 2019 Formula One World Championship | 2021 Formula One World Championship | 2024 Formula One World Championship,"La réponse est claire et bien structurée, mais pourrait être encore plus concise.","Pour déterminer le nombre de points marqués par un pilote qui finit 1er, 3e puis 2e sur trois Grands Prix, nous devons connaître le système de scoring utilisé en Formule 1.
+
+Selon [SOURCE 1], le système de scoring utilisé en 2024 est le suivant : les points sont attribués aux dix premiers classés, ainsi qu'au pilote ayant réalisé le meilleur tour en course (seulement si l'un des dix premiers) et aux huit premiers de la course sprint. Cependant, comme nous ne disposons pas d'informations sur les résultats des courses sprint, nous ne pouvons pas prendre en compte les points attribués à ce critère.
+
+Pour les autres critères, nous pouvons nous baser sur [SOURCE 2] qui indique que les points sont attribués aux dix premiers classés. Selon [SOURCE 3], le système de scoring utilisé en 2021 est le même que celui utilisé en 2019, qui est décrit dans [SOURCE 2]. Enfin, [SOURCE 4] indique que les points étaient attribués aux huit premiers classés en 2005.
+
+En comparant les systèmes de scoring, nous pouvons voir que le système utilisé en 2024 est le même que celui utilisé en 2019 et en 2021, qui attribue des points aux dix premiers classés.
+
+Maintenant, nous pouvons calculer le nombre de points marqués par le pilote qui finit 1er, 3e puis 2e sur trois Grands Prix. Selon le système de scoring, le pilote marquerait :
+
+- 25 points pour la 1er place
+- 15 points pour la 3e place
+- 18 points pour la 2e place
+
+Au total, le pilote marquerait 58 points.
+
+En conclusion, un pilote qui finit 1er, 3e puis 2e sur trois Grands Prix marquerait 58 points."
+C03,complexe,fr,Quelles differences y a-t-il entre le circuit de Monaco et celui de Monza ?,123.03,10,1.0,1.0,True,complexe,4,3,4,Circuit de Monaco | Grand Prix automobile de Monaco | Monza Circuit,"La réponse est claire et structurée, mais pourrait être encore plus concise.","**Différences entre le circuit de Monaco et celui de Monza**
+
+Le circuit de Monaco et celui de Monza sont deux des circuits les plus emblématiques du championnat du monde de Formule 1. Bien qu'ils soient tous deux situés en Europe, ils présentent des caractéristiques très différentes.
+
+**Longueur de la piste**
+
+Le circuit de Monaco mesure 3,34 km de long [SOURCE 1], tandis que celui de Monza mesure 5,793 km [SOURCE 8]. Cela signifie que le circuit de Monza est plus long que le circuit de Monaco d'une manière significative.
+
+**Nature de la piste**
+
+Le circuit de Monaco est un circuit urbain qui serpente autour du port Hercule, dans les rues de Monte-Carlo et de La Condamine [SOURCE 7]. Il est caractérisé par des virages serrés et des rails de protection qui rendent les dépassements difficiles [SOURCE 7]. En revanche, le circuit de Monza est un circuit de vitesse qui est connu pour ses longues lignes droites et ses virages rapides [SOURCE 8].
+
+**Historique**
+
+Le circuit de Monaco a une histoire riche qui remonte à 1929 [SOURCE 10]. Il a été interrompu pendant la guerre et a repris en 1948 [SOURCE 10]. Le circuit de Monza, quant à lui, a été construit en 1922 et a accueilli son premier Grand Prix en 1949 [SOURCE 9].
+
+**Caractéristiques de la course**
+
+La course au circuit de Monaco est connue pour être très exigeante et nécessite une grande précision des pilotes [SOURCE 1]. Les pilotes doivent être capables de prendre des virages serrés et de gérer les rails de protection. En revanche, la course au circuit de Monza est connue pour être très rapide et nécessite une grande vitesse [SOURCE 8].
+
+En résumé, le circuit de Monaco et celui de Monza sont deux circuits très différents qui présentent des caractéristiques uniques. Le circuit de Monaco est un circuit urbain exigeant qui nécessite une grande précision, tandis que le circuit de Monza est un circuit de vitesse qui nécessite une grande vitesse."
+C04,complexe,en,"How do DRS and KERS each help a car, and how do they differ?",103.46,4,1.0,1.0,True,complexe,4,4,5,Drag reduction system | Formula One car | Kinetic energy recovery system,"La réponse est généralement fiable, mais elle manque de détails sur les différences entre DRS et KERS. La structure et la clarté de la réponse sont excellentes.","**Réponse finale de l'assistant documentaire Formule 1**
+
+**Question : How do DRS and KERS each help a car, and how do they differ?**
+
+**DRS (Drag Reduction System)**
+
+Le Drag Reduction System (DRS) est un système qui aide les voitures à réduire la résistance aérodynamique, permettant ainsi une meilleure accélération et une meilleure capacité à passer les autres voitures. Selon [SOURCE 1], l'efficacité du DRS varie en fonction de la piste et de la configuration de la voiture. Le système est particulièrement efficace lorsque les voitures sont en bas trim de traînée, comme à Monza [SOURCE 1].
+
+**KERS (Kinetic Energy Recovery System)**
+
+Le Kinetic Energy Recovery System (KERS) est un système qui récupère l'énergie cinétique générée par la voiture lors de la freinage, la stocke et la convertit en puissance pour booster l'accélération. Selon [SOURCE 3], il existe deux types de systèmes : électrique et mécanique à volant. Les systèmes électriques utilisent un moteur-générateur incorporé dans la transmission pour convertir l'énergie mécanique en énergie électrique et vice versa [SOURCE 3].
+
+**Comparaison entre DRS et KERS**
+
+En comparant les deux systèmes, on peut voir que le DRS est conçu pour réduire la résistance aérodynamique, tandis que le KERS est conçu pour récupérer et stocker l'énergie cinétique générée par la voiture. Le DRS est particulièrement efficace sur les pistes où les voitures sont en bas trim de traînée, tandis que le KERS est efficace sur toutes les pistes, car il récupère l'énergie cinétique générée par la voiture lors de la freinage.
+
+**Conclusion**
+
+En résumé, le DRS et le KERS sont deux systèmes qui aident les voitures à améliorer leur performance en réduisant la résistance aérodynamique et en récupérant l'énergie cinétique générée par la voiture. Le DRS est conçu pour réduire la résistance aérodynamique, tandis que le KERS est conçu pour récupérer et stocker l'énergie cinétique générée par la voiture."
+C05,complexe,fr,"Qui a remporte le championnat pilotes en 2008 et en 2010, et avec quelle ecurie ?",71.32,5,1.0,1.0,False,simple,2,3,4,2008 Formula One World Championship | 2010 Formula One World Championship,"La réponse est fiable pour 2010, mais contient une erreur factuelle pour 2008. La réponse est complète pour 2010, mais incomplète pour 2008. La réponse est claire et structurée.","Le championnat pilotes a été remporté en 2008 et en 2010 par Sebastian Vettel.
+
+En 2008, Sebastian Vettel n'a pas remporté le championnat pilotes. Selon [SOURCE 1], le championnat pilotes de 2008 a été remporté par Lewis Hamilton [SOURCE 5].
+
+En 2010, Sebastian Vettel a remporté le championnat pilotes avec l'équipe Red Bull Racing [SOURCE 3] [SOURCE 4]."
+C06,complexe,en,Which teams did Fernando Alonso and Sebastian Vettel both drive for during their careers?,78.63,4,1.0,0.5,False,simple,4,2,5,Fernando Alonso | Lewis Hamilton | Sebastian Vettel,"La réponse est fiable pour les faits mentionnés, mais elle est incomplète car elle ne mentionne que Ferrari comme équipe commune, alors que d'autres équipes pourraient être mentionnées dans les passages.","Fernando Alonso and Sebastian Vettel both drove for Ferrari during their careers.
+
+Fernando Alonso drove for Ferrari from 2010 to 2014, where he won the 2010 and 2012 World Drivers' Championship titles [SOURCE 3]. Sebastian Vettel, on the other hand, drove for Ferrari from 2021 to 2022 [SOURCE 3].
+
+Il n'y a pas d'information disponible sur les autres équipes auxquelles ils ont tous deux conduit."
+C07,complexe,fr,Comment la strategie d'arret aux stands (undercut) et le depassement influencent-ils le resultat d'une course ?,126.53,4,0.0,0.0,True,complexe,4,4,5,2022 Formula One World Championship | Formule 1 | McLaren,"La réponse est globalement fiable, mais elle invente un peu en disant que les règles de sécurité ont été modifiées pour prendre en compte les risques de collision lors du dépassage. En fait, les règles de sécurité existaient déjà avant la mise en place de la stratégie d'arrêt aux stands. La réponse traite bien les deux aspects de la question, mais elle pourrait être plus complète en abordant les conséquences de la stratégie d'arrêt aux stands sur la course. La réponse est claire et bien structurée.","La stratégie d’arrêt aux stands (undercut) et le dépassage sont deux éléments clés qui influencent le résultat d’une course de Formule 1.
+
+La stratégie d’arrêt aux stands, également connue sous le nom d’""undercut"", consiste à faire arrêter un pilote à un moment où son adversaire est en train de faire une pause pour changer de pneus. Cela permet au pilote qui a fait arrêter de prendre un avantage sur son adversaire, car il peut reprendre la piste avec des pneus frais et plus performants [SOURCE 1]. Cependant, cette stratégie est risquée, car si le pilote qui a fait arrêter ne parvient pas à prendre un avantage significatif, il peut se retrouver en arrière de son adversaire.
+
+Le dépassage est un autre élément clé qui influence le résultat d’une course. Les pilotes doivent être capables de dépasser leurs adversaires pour prendre des points ou pour gagner la course. Cependant, le dépassage est souvent difficile, car les pilotes doivent être capables de prendre un avantage sur leur adversaire tout en évitant les risques de collision [SOURCE 2].
+
+En comparaison, on peut voir que la stratégie d’arrêt aux stands et le dépassage sont deux éléments complémentaires qui influencent le résultat d’une course. La stratégie d’arrêt aux stands permet aux pilotes de prendre un avantage sur leurs adversaires, tandis que le dépassage permet aux pilotes de prendre des points ou de gagner la course.
+
+Il est important de noter que les règles de la Formule 1 ont évolué au fil des ans pour prendre en compte les stratégies d’arrêt aux stands et le dépassage. Par exemple, les règles de sécurité ont été modifiées pour prendre en compte les risques de collision lors du dépassage [SOURCE 3].
+
+En conclusion, la stratégie d’arrêt aux stands et le dépassage sont deux éléments clés qui influencent le résultat d’une course de Formule 1. Les pilotes doivent être capables de prendre des décisions stratégiques pour prendre un avantage sur leurs adversaires, tout en évitant les risques de collision."
+C08,complexe,fr,"Qui a remporte le championnat 2024 et avec quelle ecurie, et qui etait deuxieme ?",69.71,11,1.0,1.0,True,complexe,5,3,4,2024 Formula One World Championship | Championnat du monde de Formule 1 2024,"La réponse est claire et structurée, mais pourrait être encore plus concise.","**Réponse finale**
+
+Le championnat du monde de Formule 1 2024 a été remporté par Max Verstappen, pilote de l'équipe Red Bull Racing [SOURCE 4]. Il a obtenu son quatrième titre de champion du monde consécutif à l'issue de la saison [SOURCE 4].
+
+La deuxième place du championnat a été occupée par Lando Norris, pilote de l'équipe McLaren [SOURCE 4]. Il a été le principal adversaire de Max Verstappen tout au long de la saison, avec l'équipe McLaren qui a réussi à se démarquer avec la MCL38 [SOURCE 4].
+
+Voici une comparaison des performances de Max Verstappen et Lando Norris au cours de la saison 2024 :
+
+- **Victoires** : Max Verstappen a remporté 7 Grands Prix, tandis que Lando Norris n'en a remporté qu'un [SOURCE 4].
+- **Podiums** : Max Verstappen a obtenu 15 podiums, contre 10 pour Lando Norris [SOURCE 4].
+- **Points** : Max Verstappen a marqué 455 points, contre 375 pour Lando Norris [SOURCE 4].
+
+En résumé, Max Verstappen a dominé la saison 2024 avec une performance exceptionnelle, tandis que Lando Norris a été son principal adversaire et a terminé deuxième du championnat."
+C09,complexe,en,Compare the power units used in modern Formula One with the role of the ERS.,147.26,7,0.0,0.0,True,complexe,5,4,4,2017 Formula One World Championship | 2022 Formula One World Championship | Formula One regulations | Formule 1 | Glossary of motorsport terms | History of Formula One,"La réponse est claire et bien structurée, mais pourrait être encore plus concise.","**Difference between modern Formula One power units and the ERS**
+
+The modern Formula One power units have undergone significant changes since the introduction of the Energy Recovery System (ERS) in 2014. The ERS, also known as the hybrid powertrain system, recovers energy from the brakes and heat and stores it in batteries, which is then used to boost power [SOURCE 4].
+
+**Comparison of power units**
+
+To understand the difference between modern Formula One power units and the ERS, let's compare them based on several criteria:
+
+* **Engine technology**: The modern Formula One power units are 1.6-litre turbocharged V6-hybrid engines, whereas the ERS is a separate system that works in conjunction with the internal combustion engine [SOURCE 6].
+* **Power output**: The modern Formula One power units generate around 1,000 bhp in total, with a full-time boost of about 160 bhp (120 kW) from electric motors [SOURCE 6]. In contrast, the ERS provides an additional 160 bhp (120 kW) of power.
+* **ERS components**: The ERS consists of a kinetic energy recovery system (KERS) and a system recovering heat from the turbocharger, officially known as the motor generator unit – heat (MGU-H) [SOURCE 4]. However, since 2026, the MGU-H is no longer used in Formula One [SOURCE 4].
+* **Regulations**: The modern Formula One power units are subject to regulations that restrict the dimensions, weight, and materials used to build each individual component [SOURCE 7]. The ERS is also subject to regulations, but the specific rules have changed over time.
+
+**Conclusion**
+
+In summary, the modern Formula One power units are more complex and powerful than the ERS, which was introduced in 2014. The ERS is a separate system that works in conjunction with the internal combustion engine to provide an additional boost of power. While the ERS is no longer used in its original form, its legacy continues to shape the modern Formula One power units."
+C10,complexe,fr,En quoi les carrieres d'Ayrton Senna et de Michael Schumacher se distinguent-elles ?,147.47,7,1.0,1.0,True,complexe,4,4,5,Ayrton Senna | Michael Schumacher,"La réponse est globalement fiable, mais elle invente le fait que Senna a remporté 41 courses, alors que la source ne le mentionne pas. La réponse traite les aspects clés de la question, mais pourrait être plus complète en abordant les différences dans les styles de conduite des deux pilotes de manière plus détaillée. La réponse est claire et structurée.","Les carrières d'Ayrton Senna et de Michael Schumacher se distinguent par plusieurs aspects clés.
+
+Tout d'abord, le nombre de titres de champion du monde de Formule 1 est différent. Michael Schumacher a remporté un record de sept titres, tandis qu'Ayrton Senna a remporté trois titres [SOURCE 3]. Cela montre que Schumacher a eu une carrière plus longue et plus réussie en termes de titres.
+
+Ensuite, le nombre de victoires en Formule 1 est également différent. Michael Schumacher a remporté 91 courses, tandis qu'Ayrton Senna a remporté 41 courses [SOURCE 3]. Cela montre que Schumacher a été plus prolifique en termes de victoires.
+
+Enfin, les styles de conduite des deux pilotes étaient différents. Ayrton Senna était connu pour sa conduite agressive et impulsive, tandis que Michael Schumacher était connu pour sa conduite plus stratégique et calculée [SOURCE 5 et SOURCE 7]. Cela montre que les deux pilotes avaient des approches différentes de la course.
+
+En résumé, les carrières d'Ayrton Senna et de Michael Schumacher se distinguent par le nombre de titres de champion du monde, le nombre de victoires et les styles de conduite."

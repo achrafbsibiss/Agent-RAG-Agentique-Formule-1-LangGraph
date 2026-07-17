@@ -1,82 +1,78 @@
-# 🏎️ Agent RAG Agentique — Formule 1 (LangGraph)
+# 🏎️ Agentic RAG — Formula 1 (LangGraph)
 
-Système **Agentic RAG** qui répond à des questions simples et complexes sur la
-Formule 1 à partir d'une base documentaire construite depuis Wikipédia (règlement,
-écuries, pilotes, circuits, technique/moteur, stratégie, et toutes les saisons
-2005–2025). Le
-graphe de raisonnement est **entièrement écrit à la main avec LangGraph** — sans
-`create_agent` — afin de contrôler chaque étape : analyse, planification,
-récupération, auto-correction et vérification anti-hallucination.
-
-> Projet réalisé pour l'évaluation de fin de module (Master IIBDCC — SMA & IAD).
+An **Agentic RAG** system that answers simple and complex questions about Formula 1
+from a knowledge base built from Wikipedia (regulations, teams, drivers, circuits,
+technology/engine, strategy, and every season from 2005 to 2025). The reasoning
+graph is **written entirely by hand with LangGraph** — without `create_agent` — to
+control every stage: analysis, planning, retrieval, self-correction and
+anti-hallucination verification.
 
 ---
 
-## 1. Ce que fait le système
+## 1. What the system does
 
-- **Bilingue FR / EN** : questions et réponses en français ou en anglais, sur un
-  corpus majoritairement anglophone (récupération cross-lingue).
-- **Agentique** : l'agent décide quels outils appeler, juge lui-même si les
-  documents récupérés sont pertinents, reformule sa requête en cas d'échec, et
-  vérifie que sa réponse finale est bien ancrée dans les sources.
-- **Mémoire** : chaque conversation possède un fil (`thread_id`) ; l'agent
-  résout les références implicites d'un tour à l'autre.
-- **Gratuit** : LLM via une clé gratuite (Groq / Google Gemini) ou en local
-  (Ollama). Embeddings 100 % locaux (ONNX, aucune clé).
+- **Bilingual FR / EN**: questions and answers in French or English, over a mostly
+  English corpus (cross-lingual retrieval).
+- **Agentic**: the agent decides which tools to call, judges whether the retrieved
+  documents are relevant, rewrites its query on failure, and verifies that its
+  final answer is grounded in the sources.
+- **Memory**: each conversation has a thread (`thread_id`); the agent resolves
+  implicit references from one turn to the next.
+- **Free**: LLM via a free key (Groq / Google Gemini) or local (Ollama).
+  Embeddings run 100% locally (ONNX, no key).
 
-## 2. Architecture du graphe
+## 2. Graph architecture
 
 ```
         ┌───────────────┐
-        │ analyze_query │  langue · question autonome · simple/complexe
+        │ analyze_query │  language · standalone question · simple/complex
         └───────┬───────┘
-       simple   │   complexe
+       simple   │   complex
          ┌──────┴───────┐
          ▼              ▼
-       agent  ◄──  plan_research      décomposition en sous-questions
+       agent  ◄──  plan_research      break complex question into sub-questions
          │  ▲
-  appel  │  │  documents pertinents
-  outil  ▼  │
+  tool   │  │  documents relevant
+  call   ▼  │
        tools │
          │   │
          ▼   │
-  grade_documents ──(hors sujet)──► rewrite_query ──┐
-         │                                          │
-   (pertinent → agent)                              │
-         │  ◄───────────────────────────────────────┘
-         ▼  (plus d'outil à appeler)
-      generate ◄──(réponse non ancrée)──┐
-         │                              │
-         ▼                              │
-   verify_grounding ───────────────────┘
+  grade_documents ──(off-topic)──► rewrite_query ──┐
+         │                                         │
+   (relevant → agent)                              │
+         │  ◄──────────────────────────────────────┘
+         ▼  (no more tools to call)
+      generate ◄──(answer not grounded)──┐
+         │                               │
+         ▼                               │
+   verify_grounding ────────────────────┘
          │
          ▼
         END
 ```
 
-| Nœud | Rôle |
+| Node | Role |
 |------|------|
-| `analyze_query` | détecte la langue, rend la question autonome (mémoire), route simple/complexe |
-| `plan_research` | décompose une question complexe en sous-questions atomiques |
-| `agent` | raisonne et choisit les outils (boucle ReAct maison, budgétée) |
-| `tools` | exécute les outils et écrit les documents dans le state |
-| `grade_documents` | juge la pertinence du contexte récupéré (auto-correction CRAG) |
-| `rewrite_query` | reformule la requête après un échec de récupération |
-| `generate` | rédige la réponse ancrée, avec citations `[SOURCE n]` |
-| `verify_grounding` | vérifie l'absence d'hallucination, regénère si besoin |
+| `analyze_query` | detects language, rewrites the question as standalone (memory), routes simple/complex |
+| `plan_research` | decomposes a complex question into atomic sub-questions |
+| `agent` | reasons and selects tools (hand-written ReAct loop, budgeted) |
+| `tools` | executes the tools and writes retrieved documents into the state |
+| `grade_documents` | judges the relevance of the retrieved context (CRAG-style self-correction) |
+| `rewrite_query` | rewrites the query after a retrieval failure |
+| `generate` | writes the grounded answer, with `[SOURCE n]` citations |
+| `verify_grounding` | checks for hallucination, regenerates if needed |
 
-Le state, la mémoire et le routage conditionnel sont détaillés dans
-[`src/graph/`](src/graph/).
+The state, memory and conditional routing are detailed in [`src/graph/`](src/graph/).
 
-## 3. Outils de l'agent
+## 3. Agent tools
 
-| Outil | Usage |
-|-------|-------|
-| `rechercher_documents` | recherche hybride (dense + BM25) sur tout le corpus |
-| `rechercher_par_categorie` | recherche filtrée (règlement, pilote, circuit…) |
-| `comparer_entites` | récupère en parallèle les faits sur deux entités à comparer |
-| `inventaire_corpus` | liste les catégories et documents disponibles |
-| `calculer_points_championnat` | calcul déterministe des points (barème officiel) |
+| Tool | Purpose |
+|------|---------|
+| `rechercher_documents` | hybrid search (dense + BM25) over the whole corpus |
+| `rechercher_par_categorie` | filtered search (regulations, driver, circuit, strategy…) |
+| `comparer_entites` | retrieves facts about two entities to compare, in parallel |
+| `inventaire_corpus` | lists available categories and documents |
+| `calculer_points_championnat` | deterministic points calculation (official scale) |
 
 ## 4. Installation
 
@@ -87,80 +83,81 @@ source .venv/bin/activate
 pip install -r requirements.txt
 
 cp .env.example .env
-# éditer .env : choisir LLM_PROVIDER et renseigner la clé correspondante
+# edit .env: choose LLM_PROVIDER and fill in the matching key
 ```
 
-Obtenir une clé **gratuite** :
-- Groq : <https://console.groq.com/keys>
-- Google Gemini : <https://aistudio.google.com/apikey>
-- Ollama (local, sans clé) : <https://ollama.com>
+Get a **free** key:
+- Groq: <https://console.groq.com/keys>
+- Google Gemini: <https://aistudio.google.com/apikey>
+- Ollama (local, no key): <https://ollama.com>
 
-## 5. Utilisation
+## 5. Usage
 
 ```bash
-# 1. Construire la base documentaire (Wikipédia, sans clé)
+# 1. Build the knowledge base (Wikipedia, no key)
 python scripts/01_build_corpus.py
 
-# 2. Découper + indexer (télécharge le modèle d'embeddings au 1er lancement)
+# 2. Chunk + index (downloads the embedding model on first run)
 python scripts/02_index.py
 
-# 3. Exporter la visualisation du graphe
+# 3. Export the graph visualization
 python scripts/03_visualize_graph.py
 
-# 4. Discuter avec l'agent
-python scripts/chat.py            # ajouter --trace pour voir le raisonnement
+# 4. Chat with the agent
+python scripts/chat.py            # add --trace to see the reasoning
 
-# 5. Lancer l'évaluation (20 questions + métriques + rapports)
+# 5. Run the evaluation (20 questions + metrics + reports)
 python scripts/04_evaluate.py
+
+# 6. Build the PDF report (injects the evaluation results)
+python scripts/05_build_report.py
 ```
 
-## 6. Évaluation
+## 6. Evaluation
 
-`scripts/04_evaluate.py` exécute 10 questions simples et 10 questions complexes
-(bilingues), puis mesure :
+`scripts/04_evaluate.py` runs 10 simple and 10 complex (bilingual) questions,
+then measures:
 
-- **latence** bout-en-bout par question ;
-- **pertinence des documents** récupérés (`hit@k`, `MRR`) ;
-- **qualité de la réponse** notée par un LLM juge (fidélité, complétude, clarté).
+- **latency** end-to-end per question;
+- **relevance of retrieved documents** (`hit@k`, `MRR`);
+- **answer quality** scored by an LLM judge (faithfulness, completeness, clarity).
 
-Sorties : `reports/evaluation.csv` (détail) et `reports/evaluation.md` (synthèse).
+Outputs: `reports/evaluation.csv` (detail) and `reports/evaluation.md` (summary).
 
-## 7. Structure du projet
+## 7. Project structure
 
 ```
 f1_agentic_rag/
-├── scripts/            # points d'entrée numérotés (corpus → index → chat → éval)
+├── scripts/            # numbered entry points (corpus → index → chat → eval → report)
 ├── src/
-│   ├── config.py       # configuration centrale
-│   ├── corpus/         # construction de la base documentaire
-│   ├── ingestion/      # embeddings, chunking, vectorstore, retriever hybride
-│   ├── llm/            # fabrique de modèles (Groq / Gemini / Ollama)
-│   ├── tools/          # outils de l'agent
-│   ├── graph/          # state, nœuds, arêtes, assemblage du graphe
-│   └── evaluation/     # jeu de questions, métriques, juge, harnais
-├── reports/            # résultats d'évaluation + figures
+│   ├── config.py       # central configuration
+│   ├── corpus/         # knowledge base construction
+│   ├── ingestion/      # embeddings, chunking, vectorstore, hybrid retriever
+│   ├── llm/            # model factory (Groq / Gemini / Ollama)
+│   ├── tools/          # agent tools
+│   ├── graph/          # state, nodes, edges, graph assembly
+│   └── evaluation/     # question set, metrics, judge, harness
+├── reports/            # evaluation results + figures + PDF report
 └── requirements.txt
 ```
 
-## 8. Choix techniques notables
+## 8. Notable technical choices
 
-- **Embeddings via FastEmbed (ONNX)** et non PyTorch : PyTorch ne publie plus de
-  roue pour macOS x86_64 / Python 3.13, ce qui rendait le projet ininstallable.
-  ONNX est aussi plus léger et plus rapide sur CPU.
-- **Récupération hybride + RRF** : la recherche dense seule échoue sur les
-  sigles (DRS, ERS) et les noms propres ; BM25 les rattrape. La fusion par
-  Reciprocal Rank Fusion combine les deux sans normaliser des scores hétérogènes.
-- **Plafond de chunks par document** : le corpus est déséquilibré (la page
-  « Formule 1 » pèse ~390 chunks) ; sans plafond, un document généraliste
-  monopolise le top-k.
-- **Boost par millésime** : avec 22 saisons quasi identiques (2005–2025), une
-  question « champion 2010 » pouvait ramener une autre année ; un bonus
-  déterministe réancre la recherche sur le bon millésime.
-- **Répartition des modèles** : le raisonneur utilise un gros modèle
-  (Llama 3.3 70B) ; l'évaluateur de pertinence, le vérificateur d'ancrage et le
-  juge sont routés vers un modèle léger (Llama 3.1 8B) — moins coûteux en tokens
-  et soumis à des limites de débit distinctes, ce qui évite de saturer le quota
-  gratuit sur les boucles à fort volume.
-- **Robustesse** : chaque nœud à appel LLM capture les erreurs (quota 429, sortie
-  mal formée) et dégrade proprement (repli « fail-open ») au lieu de planter ;
-  l'évaluation sauvegarde ses résultats de façon incrémentale.
+- **Embeddings via FastEmbed (ONNX)** instead of PyTorch: PyTorch no longer ships
+  a wheel for macOS x86_64 / Python 3.13, which made the project uninstallable.
+  ONNX is also lighter and faster on CPU.
+- **Hybrid retrieval + RRF**: dense search alone fails on acronyms (DRS, ERS) and
+  proper nouns; BM25 catches them. Reciprocal Rank Fusion combines both without
+  normalizing heterogeneous scores.
+- **Per-document chunk cap**: the corpus is unbalanced (the "Formula 1" page alone
+  is ~390 chunks); without a cap, one generalist document monopolizes the top-k.
+- **Year boost**: with 22 near-identical seasons (2005–2025), a "2010 champion"
+  question could return another year; a deterministic bonus re-anchors the search
+  on the correct year.
+- **Model split**: the reasoner uses a large model (Llama 3.3 70B); the relevance
+  grader, grounding verifier and judge are routed to a light model (Llama 3.1 8B) —
+  cheaper in tokens and subject to separate rate limits, which avoids exhausting
+  the free quota on high-volume loops.
+- **Robustness**: every LLM-calling node catches errors (429 quota, malformed
+  output) and degrades gracefully (fail-open) instead of crashing; the evaluation
+  saves its results incrementally.
