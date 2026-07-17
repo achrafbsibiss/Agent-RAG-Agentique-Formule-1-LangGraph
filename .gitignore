@@ -1,0 +1,10 @@
+data/chroma/
+data/raw/
+.venv/
+.env
+__pycache__/
+*.pyc
+reports/*.csv
+reports/*.md
+!reports/.gitkeep
+data/.model_cache/

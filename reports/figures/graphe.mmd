@@ -1,0 +1,32 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	analyze_query(analyze_query)
+	plan_research(plan_research)
+	agent(agent)
+	tools(tools)
+	grade_documents(grade_documents)
+	rewrite_query(rewrite_query)
+	generate(generate)
+	verify_grounding(verify_grounding)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> analyze_query;
+	agent -.-> generate;
+	agent -.-> tools;
+	analyze_query -.-> agent;
+	analyze_query -.-> plan_research;
+	generate --> verify_grounding;
+	grade_documents -.-> agent;
+	grade_documents -.-> rewrite_query;
+	plan_research --> agent;
+	rewrite_query --> agent;
+	tools --> grade_documents;
+	verify_grounding -.-> __end__;
+	verify_grounding -.-> generate;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc

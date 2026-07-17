@@ -1,0 +1,37 @@
+# --- Orchestration agentique ---
+langgraph>=0.2.60
+langchain>=0.3.14
+langchain-core>=0.3.29
+langchain-community>=0.3.14
+langchain-text-splitters>=0.3.5
+
+# --- Fournisseurs LLM (installer au moins celui choisi dans .env) ---
+langchain-groq>=0.2.3
+langchain-google-genai>=2.0.8
+langchain-ollama>=0.2.2
+
+# --- Embeddings locaux multilingues (FR/EN), via ONNX Runtime ---
+# FastEmbed remplace sentence-transformers : PyTorch ne publie plus de roue
+# macOS x86_64 (>=2.2) ni de roue Python 3.13, ce qui rend torch ininstallable
+# sur un Mac Intel recent. ONNX est aussi plus rapide sur CPU.
+fastembed>=0.5.0
+
+# --- Base vectorielle ---
+langchain-chroma>=0.2.0
+chromadb>=0.5.23
+
+# --- Recherche lexicale (hybride BM25 + dense) ---
+rank-bm25>=0.2.2
+
+# --- Construction du corpus ---
+requests>=2.32.0
+
+# --- Utilitaires ---
+python-dotenv>=1.0.1
+pydantic>=2.10.0
+tenacity>=9.0.0
+
+# --- Evaluation & rapport ---
+pandas>=2.2.3
+matplotlib>=3.9.0
+tabulate>=0.9.0
